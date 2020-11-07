@@ -13,7 +13,7 @@
 #include "HEAR_mission/SetRelativeWaypoint.hpp"
 #include "HEAR_mission/SetAbsoluteWaypoint.hpp"
 #include "HEAR_mission/UpdateController.hpp"
-#include "HEAR_ROS_BRIDGE/ROSUnit_UpdateController.hpp"
+#include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerClnt.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_OrientationSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_InfoSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_Factory.hpp"
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "flight_scenario");
     ros::NodeHandle nh;
 
-    ROSUnit* ros_updt_ctr = new ROSUnit_UpdateController(nh);
+    ROSUnit* ros_updt_ctr = new ROSUnit_UpdateControllerClnt(nh);
     ROSUnit* ros_info_sub = new ROSUnit_InfoSubscriber(nh);
     ROSUnit* ros_restnorm_settings = new ROSUnit_RestNormSettingsClnt(nh);
     
@@ -54,43 +54,12 @@ int main(int argc, char** argv) {
 	ROSUnit* ros_set_path_clnt = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                     ROSUnit_msg_type::ROSUnit_Poses,
                                                                     "uav_control/set_path");
-	// ROSUnit* ros_set_hover_point_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "uav_control/set_hover_point");
-    // ROSUnit* ros_set_mission_state_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
-    //                                                                         ROSUnit_msg_type::ROSUnit_Int,
-    //                                                                         "uav_control/set_mission_state");
-    // ROSUnit* ros_uav_attitude_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
-    //                                                                 ROSUnit_msg_type::ROSUnit_Float,
-    //                                                                 "uav_control/uav_attitude");
-    ROSUnit* ros_updt_uav_control_state_clnt = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
-                                                                                ROSUnit_msg_type::ROSUnit_Int,
-                                                                                "ex_bldg_fire_mm/update_uav_control_state");
     ROSUnit* ros_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                     ROSUnit_msg_type::ROSUnit_Float,
                                                                     "set_height_offset"); 
-    // ROSUnit* rosunit_x_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/x");
-    // ROSUnit* rosunit_y_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/y");
-    // ROSUnit* rosunit_z_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/z");
-    // ROSUnit* rosunit_roll_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/roll");
-    // ROSUnit* rosunit_pitch_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/pitch");
     ROSUnit* rosunit_yaw_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw");
-    // ROSUnit* rosunit_yaw_rate_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
-    //                                                                 ROSUnit_msg_type::ROSUnit_Point,
-    //                                                                 "/providers/yaw_rate");
-
 //     //*****************Flight Elements*************
 
     MissionElement* update_controller_pid_x = new UpdateController();
@@ -134,37 +103,31 @@ int main(int argc, char** argv) {
     MissionElement* land_relative_waypoint = new SetRelativeWaypoint(0., 0., -2., 0.);
 
     //******************Connections***************
-    update_controller_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_roll->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_pitch->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_yaw->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
-    update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateController::ports_id::IP_0_PID]);
+    update_controller_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_roll->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_pitch->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_yaw->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
 
-    ros_pos_sub->getPorts()[(int)ROSUnit_PositionSubscriber::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
-    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_5]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
+    ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
+    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_1]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
     
-    ros_pos_sub->getPorts()[(int)ROSUnit_PositionSubscriber::ports_id::OP_0]->connect(takeoff_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
-    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_5]->connect(takeoff_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
-    //rosunit_yaw_provider->connect(absolute_zero_Z_relative_waypoint);
-    //ros_pos_sub->connect(absolute_zero_Z_relative_waypoint);
-    ros_pos_sub->getPorts()[(int)ROSUnit_PositionSubscriber::ports_id::OP_0]->connect(land_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
-    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_5]->connect(land_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
+    ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(takeoff_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
+    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_1]->connect(takeoff_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
 
-    ros_pos_sub->getPorts()[(int)ROSUnit_PositionSubscriber::ports_id::OP_0]->connect(set_height_offset->getPorts()[(int)SetHeightOffset::ports_id::IP_0]);
+    ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(land_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
+    rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_1]->connect(land_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
 
-    reset_z->getPorts()[(int)ResetController::ports_id::OP_0]->connect(ros_rst_ctr->getPorts()[(int)ROSUnit_ResetController::ports_id::IP_0]);
+    ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(set_height_offset->getPorts()[(int)SetHeightOffset::ports_id::IP_0]);
 
-    arm_motors->getPorts()[(int)Arm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_Arm::ports_id::IP_0]);
-    disarm_motors->getPorts()[(int)Disarm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_Arm::ports_id::IP_0]);
+    reset_z->getPorts()[(int)ResetController::ports_id::OP_0]->connect(ros_rst_ctr->getPorts()[(int)ROSUnit_SetInt8Clnt::ports_id::IP_0]);
 
-    ros_flight_command->getPorts()[(int)ROSUnit_FlightCommand::ports_id::OP_0]->connect(flight_command->getPorts()[(int)FlightCommand::ports_id::IP_0]);
+    arm_motors->getPorts()[(int)Arm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_SetBoolClnt::ports_id::IP_0]);
+    disarm_motors->getPorts()[(int)Disarm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_SetBoolClnt::ports_id::IP_0]);
 
-    ros_info_sub->getPorts()[(int)ROSUnit_InfoSubscriber::ports_id::OP_0]->connect(state_monitor->getPorts()[(int)StateMonitor::ports_id::IP_0_INFO]);
-    ros_pos_sub->getPorts()[(int)ROSUnit_PositionSubscriber::ports_id::OP_0]->connect(state_monitor->getPorts()[(int)StateMonitor::ports_id::IP_1_POSITION]);
-
-    state_monitor->getPorts()[(int)StateMonitor::ports_id::OP_0]->connect(ros_updt_uav_control_state_clnt->getPorts()[(int)ROSUnit_SetIntClnt::IP_0]);
+    ros_flight_command->getPorts()[(int)ROSUnit_EmptySrv::ports_id::OP_0]->connect(flight_command->getPorts()[(int)MissionCommand::ports_id::IP_0]);
 
     set_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
     land_set_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
@@ -264,7 +227,7 @@ int main(int argc, char** argv) {
     wait_100ms.wait_time_ms=100;
   
     #ifdef TESTING
-    FlightPipeline testing_pipeline;
+    MissionPipeline testing_pipeline;
 
     testing_pipeline.addElement((MissionElement*)&wait_1s);
     testing_pipeline.addElement((MissionElement*)update_controller_pid_x);
@@ -305,10 +268,10 @@ int main(int argc, char** argv) {
     #endif
 
     Logger::getAssignedLogger()->log("FlightScenario main_scenario",LoggerLevel::Info);
-    FlightScenario main_scenario;
+    MissionScenario main_scenario;
 
     #ifdef TESTING
-    main_scenario.AddFlightPipeline(&testing_pipeline);
+    main_scenario.AddMissionPipeline(&testing_pipeline);
     #endif
 
     main_scenario.StartScenario();
