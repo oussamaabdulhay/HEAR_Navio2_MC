@@ -1,0 +1,17 @@
+{
+  "configurations": [
+      {
+          "name": "Linux",
+          "includePath": [
+              "../HEAR_Architecture/**",
+              "../HEAR_ROS_BRIDGE/**",
+              "../../devel/include/**",
+              "/opt/ros/melodic/include/**"
+          ],
+          "compilerPath": "/usr/bin/clang",
+          "cStandard": "c11",
+          "intelliSenseMode": "clang-x64"
+      }
+  ],
+  "version": 4
+}
