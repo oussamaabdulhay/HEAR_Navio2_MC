@@ -14,6 +14,10 @@
 #include "HEAR_mission/SetAbsoluteWaypoint.hpp"
 #include "HEAR_mission/UpdateController.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerClnt.hpp"
+//
+#include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerSrv.hpp"
+#include "HEAR_control/PIDController.hpp"
+//
 #include "HEAR_ROS_BRIDGE/ROSUnit_OrientationSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_InfoSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_Factory.hpp"
@@ -215,7 +219,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.en_pv_derivation = 1;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
-
+    std::cout << "pid block block " << static_cast<int>(block_id::PID_YAW_RATE) << "\n";
     #endif
 
     ((ResetController*)reset_z)->target_block = block_id::PID_Z;
