@@ -1,3 +1,4 @@
+//TODO: Check again the whole naming and archeticting of SetRelativeWaypoint and SetAbsoluteWaypoint
 #include <iostream>
 
 #include "HEAR_core/std_logger.hpp"
@@ -6,7 +7,7 @@
 #include "HEAR_mission/Arm.hpp"
 #include "HEAR_mission/Disarm.hpp"
 #include "HEAR_mission/MissionScenario.hpp"
-#include "HEAR_mission/MissionCommand.hpp"
+#include "HEAR_mission/UserCommand.hpp"
 #include "HEAR_mission/SetRestNormSettings.hpp"
 #include "HEAR_mission/SetHeightOffset.hpp"
 #include "HEAR_mission/ResetController.hpp"
@@ -53,7 +54,7 @@ int main(int argc, char** argv) {
                                                             "reset_controller");
     ROSUnit* ros_flight_command = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
                                                                     ROSUnit_msg_type::ROSUnit_Empty,
-                                                                    "flight_command");
+                                                                    "flight_command");//TODO: Change to user_command
 	ROSUnit* ros_set_path_clnt = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                     ROSUnit_msg_type::ROSUnit_Poses,
                                                                     "uav_control/set_path");
@@ -78,17 +79,17 @@ int main(int argc, char** argv) {
     MissionElement* arm_motors = new Arm();
     MissionElement* disarm_motors = new Disarm();
 
-    MissionElement* flight_command = new MissionCommand();
+    MissionElement* user_command = new UserCommand();
 
     // MissionElement* state_monitor = new StateMonitor();
 
-    MissionElement* set_settings = new SetRestNormSettings(true, false, 0.5); 
+    MissionElement* set_restricted_norm_settings = new SetRestNormSettings(true, false, 10); 
 
-    MissionElement* land_set_settings = new SetRestNormSettings(true, false, 0.15);
-    MissionElement* waypoint_set_settings = new SetRestNormSettings(true, false, 0.40); 
+    MissionElement* land_set_rest_norm_settings = new SetRestNormSettings(true, false, 0.15);
+    MissionElement* waypoint_set_rest_norm_settings = new SetRestNormSettings(true, false, 0.40); 
 
-    MissionElement* set_height_offset = new SetHeightOffset();
-    MissionElement* initial_pose_waypoint = new SetRelativeWaypoint(0., 0., 0., 0.);
+    MissionElement* set_height_offset = new SetHeightOffset(); 
+    MissionElement* initial_pose_waypoint = new SetRelativeWaypoint(0., 0., 0., 0.); //TODO: SetRelativeWaypoint needs substantial refactoring
     
     #ifdef TESTING
     MissionElement* takeoff_relative_waypoint = new SetRelativeWaypoint(0., 0., 1.0, 0.);
@@ -130,11 +131,11 @@ int main(int argc, char** argv) {
     arm_motors->getPorts()[(int)Arm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_SetBoolClnt::ports_id::IP_0]);
     disarm_motors->getPorts()[(int)Disarm::ports_id::OP_0]->connect(ros_arm_srv->getPorts()[(int)ROSUnit_SetBoolClnt::ports_id::IP_0]);
 
-    ros_flight_command->getPorts()[(int)ROSUnit_EmptySrv::ports_id::OP_0]->connect(flight_command->getPorts()[(int)MissionCommand::ports_id::IP_0]);
+    ros_flight_command->getPorts()[(int)ROSUnit_EmptySrv::ports_id::OP_0]->connect(user_command->getPorts()[(int)UserCommand::ports_id::IP_0]);
 
-    set_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
-    land_set_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
-    waypoint_set_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
+    set_restricted_norm_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
+    land_set_rest_norm_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
+    waypoint_set_rest_norm_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
     
     set_height_offset->getPorts()[(int)SetHeightOffset::ports_id::OP_0]->connect(ros_set_height_offset->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
@@ -293,6 +294,7 @@ int main(int argc, char** argv) {
     MissionPipeline testing_pipeline;
 
     testing_pipeline.addElement((MissionElement*)&wait_1s);
+    
     testing_pipeline.addElement((MissionElement*)update_controller_pid_x);
     testing_pipeline.addElement((MissionElement*)update_controller_pid_y);
     testing_pipeline.addElement((MissionElement*)update_controller_pid_z);
@@ -301,30 +303,30 @@ int main(int argc, char** argv) {
     testing_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
     testing_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
 
-    testing_pipeline.addElement((MissionElement*)set_height_offset);
+    testing_pipeline.addElement((MissionElement*)set_height_offset); //TODO: (CHECK Desc) Set a constant height command/reference based on the current pos
     testing_pipeline.addElement((MissionElement*)&wait_1s);
-    testing_pipeline.addElement((MissionElement*)set_settings);
+    testing_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
     testing_pipeline.addElement((MissionElement*)initial_pose_waypoint);
-    testing_pipeline.addElement((MissionElement*)flight_command);
-    testing_pipeline.addElement((MissionElement*)reset_z);
+    testing_pipeline.addElement((MissionElement*)user_command);
+    testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
     testing_pipeline.addElement((MissionElement*)arm_motors);
-    testing_pipeline.addElement((MissionElement*)flight_command);
-    testing_pipeline.addElement((MissionElement*)reset_z);
+    testing_pipeline.addElement((MissionElement*)user_command);
+    testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    testing_pipeline.addElement((MissionElement*)flight_command);
-    testing_pipeline.addElement((MissionElement*)waypoint_set_settings);   
-    testing_pipeline.addElement((MissionElement*)&wait_100ms);
-    testing_pipeline.addElement((MissionElement*)absolute_origin_1m_height);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_1);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_2);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_3);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_4);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_5);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_6);
-    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_7);
-    testing_pipeline.addElement((MissionElement*)flight_command);
-    testing_pipeline.addElement((MissionElement*)land_set_settings);   
+    testing_pipeline.addElement((MissionElement*)user_command);
+    // testing_pipeline.addElement((MissionElement*)waypoint_set_rest_norm_settings);   
+    // testing_pipeline.addElement((MissionElement*)&wait_100ms);
+    // testing_pipeline.addElement((MissionElement*)absolute_origin_1m_height);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_1);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_2);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_3);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_4);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_5);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_6);
+    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_7);
+    // testing_pipeline.addElement((MissionElement*)user_command);
+    testing_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
     testing_pipeline.addElement((MissionElement*)land_relative_waypoint);
     #endif
