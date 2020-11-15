@@ -29,7 +29,8 @@
 // #include "InternalSystemStateCondition.hpp"
 // #include "StateMonitor.hpp"
 
-#define TESTING
+#undef TESTING
+#define MRFT_Z_CAMERA
 #define BIG_HEXA
 int main(int argc, char** argv) {
     Logger::assignLogger(new StdLogger());
@@ -46,6 +47,30 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
+    ROSUnit* ros_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "pid_switch_y");
+    ROSUnit* ros_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "mrft_switch_y");
+    ROSUnit* ros_provider_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "provider_switch_y");
+    ROSUnit* ros_reference_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "reference_switch_y");
+    ROSUnit* ros_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "pid_switch_z");
+    ROSUnit* ros_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "mrft_switch_z");
+    ROSUnit* ros_provider_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "provider_switch_z");
+    ROSUnit* ros_reference_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Int8,
+                                                                      "reference_switch_z");
     ROSUnit* ros_pos_sub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber,
                                                             ROSUnit_msg_type::ROSUnit_Point,
                                                             "global2inertial/position");
@@ -74,6 +99,14 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_pid_yaw = new UpdateController();
     MissionElement* update_controller_pid_yaw_rate = new UpdateController();
 
+    MissionElement* update_controller_mrft_x = new UpdateController();
+    MissionElement* update_controller_mrft_y = new UpdateController();
+    MissionElement* update_controller_mrft_z = new UpdateController();
+    MissionElement* update_controller_mrft_roll = new UpdateController();
+    MissionElement* update_controller_mrft_pitch = new UpdateController();
+    MissionElement* update_controller_mrft_yaw = new UpdateController();
+    MissionElement* update_controller_mrft_yaw_rate = new UpdateController();
+
     MissionElement* reset_z = new ResetController();
 
     MissionElement* arm_motors = new Arm();
@@ -83,7 +116,7 @@ int main(int argc, char** argv) {
 
     // MissionElement* state_monitor = new StateMonitor();
 
-    MissionElement* set_restricted_norm_settings = new SetRestNormSettings(true, false, 10); 
+    MissionElement* set_restricted_norm_settings = new SetRestNormSettings(true, false, 0.5); 
 
     MissionElement* land_set_rest_norm_settings = new SetRestNormSettings(true, false, 0.15);
     MissionElement* waypoint_set_rest_norm_settings = new SetRestNormSettings(true, false, 0.40); 
@@ -280,6 +313,42 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.en_pv_derivation = 1;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
+    
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.1;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.id = block_id::MRFT_X;
+
+    ((UpdateController*)update_controller_mrft_y)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_y)->mrft_data.relay_amp = 0.20;
+    ((UpdateController*)update_controller_mrft_y)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_y)->mrft_data.id = block_id::MRFT_Y;
+
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.id = block_id::MRFT_Z;
+    
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.04;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.id = block_id::MRFT_ROLL;
+
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.04;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.id = block_id::MRFT_PITCH;
+
+    ((UpdateController*)update_controller_mrft_yaw)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_yaw)->mrft_data.relay_amp = 0.1;
+    ((UpdateController*)update_controller_mrft_yaw)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_yaw)->mrft_data.id = block_id::MRFT_YAW;
+
+    ((UpdateController*)update_controller_mrft_yaw_rate)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_yaw_rate)->mrft_data.relay_amp = 0.1;
+    ((UpdateController*)update_controller_mrft_yaw_rate)->mrft_data.bias = 0.0;
+    ((UpdateController*)update_controller_mrft_yaw_rate)->mrft_data.id = block_id::MRFT_YAW_RATE;
+
     #endif
 
     ((ResetController*)reset_z)->target_block = block_id::PID_Z;
@@ -315,20 +384,66 @@ int main(int argc, char** argv) {
     testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
     testing_pipeline.addElement((MissionElement*)user_command);
-    // testing_pipeline.addElement((MissionElement*)waypoint_set_rest_norm_settings);   
-    // testing_pipeline.addElement((MissionElement*)&wait_100ms);
-    // testing_pipeline.addElement((MissionElement*)absolute_origin_1m_height);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_1);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_2);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_3);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_4);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_5);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_6);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_7);
-    // testing_pipeline.addElement((MissionElement*)user_command);
+    testing_pipeline.addElement((MissionElement*)waypoint_set_rest_norm_settings);   
+    testing_pipeline.addElement((MissionElement*)&wait_100ms);
+    testing_pipeline.addElement((MissionElement*)absolute_origin_1m_height);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_1);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_2);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_3);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_4);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_5);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_6);
+    testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_7);
+    testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
     testing_pipeline.addElement((MissionElement*)land_relative_waypoint);
+    #endif
+
+    #ifdef MRFT_Z_CAMERA
+    MissionPipeline mrft_pipeline;
+
+    mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_x);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_y);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_z);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_roll);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_pitch);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
+    mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_x);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_y);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_z);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_roll);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_pitch);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_yaw);
+    mrft_pipeline.addElement((MissionElement*)update_controller_mrft_yaw_rate);
+
+    mrft_pipeline.addElement((MissionElement*)set_height_offset); //TODO: (CHECK Desc) Set a constant height command/reference based on the current pos
+    mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    mrft_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
+    mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
+    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
+    mrft_pipeline.addElement((MissionElement*)&wait_100ms);
+    mrft_pipeline.addElement((MissionElement*)arm_motors);
+    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
+    mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)switch_block_pid_to_mrft_z);
+    mrft_pipeline.addElement((MissionElement*)absolute_zero_Z_relative_waypoint);
+    mrft_pipeline.addElement((MissionElement*)set_camera_enabled);
+    mrft_pipeline.addElement((MissionElement*)flight_command);  
+    mrft_pipeline.addElement((MissionElement*)set_camera_disabled);
+    mrft_pipeline.addElement((MissionElement*)&wait_100ms);
+    mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
+    mrft_pipeline.addElement((MissionElement*)switch_block_mrft_to_pid_z); 
+    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
+    mrft_pipeline.addElement((MissionElement*)&wait_100ms);
+    mrft_pipeline.addElement((MissionElement*)land_relative_waypoint);
     #endif
 
     Logger::getAssignedLogger()->log("FlightScenario main_scenario",LoggerLevel::Info);
@@ -336,6 +451,10 @@ int main(int argc, char** argv) {
 
     #ifdef TESTING
     main_scenario.AddMissionPipeline(&testing_pipeline);
+    #endif
+
+    #ifdef MRFT_Z_CAMERA
+    main_scenario.AddMissionPipeline(&mrft_pipeline);
     #endif
 
     main_scenario.StartScenario();
