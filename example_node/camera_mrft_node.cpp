@@ -12,25 +12,19 @@
 #include "HEAR_mission/SetHeightOffset.hpp"
 #include "HEAR_mission/ResetController.hpp"
 #include "HEAR_mission/SetRelativeWaypoint.hpp"
-//#include "HEAR_mission/SetFloatConst.hpp"
 #include "HEAR_mission/SwitchTrigger.hpp"
 #include "HEAR_mission/SetAbsoluteWaypoint.hpp"
 #include "HEAR_mission/UpdateController.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerClnt.hpp"
 #include "HEAR_math/ConstantFloat.hpp"
-//
 #include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerSrv.hpp"
 #include "HEAR_control/PIDController.hpp"
-//
 #include "HEAR_ROS_BRIDGE/ROSUnit_OrientationSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_InfoSubscriber.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_Factory.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_RestNormSettingsClnt.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
-// #include "ChangeInternalState.hpp"
-// #include "InternalSystemStateCondition.hpp"
-// #include "StateMonitor.hpp"
 
 #define MRFT_Z_CAMERA
 #define MRFT_Y_CAMERA
@@ -107,14 +101,12 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_mrft_y = new UpdateController();
     MissionElement* pid_to_mrft_switch_y=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_y=new SwitchTrigger(1);
-    //MissionElement* set_camera_reference_y=new SetFloatConst(0);
     #endif
 
     #ifdef  MRFT_Z_CAMERA
     MissionElement* update_controller_mrft_z = new UpdateController();
     MissionElement* pid_to_mrft_switch_z=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_z=new SwitchTrigger(1);
-    //MissionElement* set_camera_reference_z=new SetFloatConst(0);
     #endif
 
     MissionElement* reset_z = new ResetController();

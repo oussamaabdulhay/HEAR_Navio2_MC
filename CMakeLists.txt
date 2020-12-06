@@ -25,7 +25,7 @@ include_directories(
 )
 
 add_executable(mc_test_node example_node/test_node.cpp)
-add_executable(mc_mrft_node example_node/mrft_node.cpp)
+add_executable(mc_mrft_node example_node/camera_mrft_node.cpp)
 add_executable(mc_translation_node example_node/traslation_node.cpp)
 
 target_link_libraries(mc_test_node ${catkin_LIBRARIES})
