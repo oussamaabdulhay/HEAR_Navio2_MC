@@ -24,8 +24,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(mc_example_node example_node/example_node.cpp)
+add_executable(mc_test_node example_node/test_node.cpp)
+add_executable(mc_mrft_node example_node/mrft_node.cpp)
 add_executable(mc_translation_node example_node/traslation_node.cpp)
 
-target_link_libraries(mc_example_node ${catkin_LIBRARIES})
+target_link_libraries(mc_test_node ${catkin_LIBRARIES})
+target_link_libraries(mc_mrft_node ${catkin_LIBRARIES})
 target_link_libraries(mc_translation_node ${catkin_LIBRARIES})

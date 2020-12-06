@@ -166,3 +166,151 @@ Makefile:126: recipe for target 'cmTC_635a3/fast' failed
 make: *** [cmTC_635a3/fast] Error 2
 
 
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/clang-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/clang++-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_11ec0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_11ec0.dir/build.make CMakeFiles/cmTC_11ec0.dir/build
+make[1]: Entering directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_11ec0.dir/testCCompiler.c.o
+/usr/bin/clang-6.0    -o CMakeFiles/cmTC_11ec0.dir/testCCompiler.c.o   -c /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_11ec0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11ec0.dir/link.txt --verbose=1
+/usr/bin/clang-6.0      -rdynamic CMakeFiles/cmTC_11ec0.dir/testCCompiler.c.o  -o cmTC_11ec0 
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_11ec0.dir/build.make:97: recipe for target 'cmTC_11ec0' failed
+make[1]: *** [cmTC_11ec0] Error 1
+make[1]: Leaving directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_11ec0/fast' failed
+make: *** [cmTC_11ec0/fast] Error 2
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/clang-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/clang++-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ec930/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ec930.dir/build.make CMakeFiles/cmTC_ec930.dir/build
+make[1]: Entering directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ec930.dir/testCCompiler.c.o
+/usr/bin/clang-6.0    -o CMakeFiles/cmTC_ec930.dir/testCCompiler.c.o   -c /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_ec930
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ec930.dir/link.txt --verbose=1
+/usr/bin/clang-6.0      -rdynamic CMakeFiles/cmTC_ec930.dir/testCCompiler.c.o  -o cmTC_ec930 
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_ec930.dir/build.make:97: recipe for target 'cmTC_ec930' failed
+make[1]: *** [cmTC_ec930] Error 1
+make[1]: Leaving directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ec930/fast' failed
+make: *** [cmTC_ec930/fast] Error 2
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/clang-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/clang++-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_914bc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_914bc.dir/build.make CMakeFiles/cmTC_914bc.dir/build
+make[1]: Entering directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_914bc.dir/testCCompiler.c.o
+/usr/bin/clang-6.0    -o CMakeFiles/cmTC_914bc.dir/testCCompiler.c.o   -c /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_914bc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_914bc.dir/link.txt --verbose=1
+/usr/bin/clang-6.0      -rdynamic CMakeFiles/cmTC_914bc.dir/testCCompiler.c.o  -o cmTC_914bc 
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_914bc.dir/build.make:97: recipe for target 'cmTC_914bc' failed
+make[1]: *** [cmTC_914bc] Error 1
+make[1]: Leaving directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_914bc/fast' failed
+make: *** [cmTC_914bc/fast] Error 2
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/clang-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /usr/bin/clang++-6.0 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
