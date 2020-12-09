@@ -202,7 +202,7 @@ int main(int argc, char** argv) {
     land_set_rest_norm_settings->getPorts()[(int)SetRestNormSettings::ports_id::OP_0]->connect(ros_restnorm_settings->getPorts()[(int)ROSUnit_RestNormSettingsClnt::ports_id::IP_0]);
       
     set_height_offset->getPorts()[(int)SetHeightOffset::ports_id::OP_0]->connect(ros_set_height_offset->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    send_set_map_offset_signal->getPorts()[(int)SendBoolSignal::ports_id::OP_0]->connect(rosunit_set_map_frame_offset->getPorts()[(int)]ROSUnit_SetBoolClnt::ports_id::IP_0]);
+    send_set_map_offset_signal->getPorts()[(int)SendBoolSignal::ports_id::OP_0]->connect(rosunit_set_map_frame_offset->getPorts()[(int)ROSUnit_SetBoolClnt::ports_id::IP_0]);
     initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
     takeoff_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
 
@@ -275,21 +275,26 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
+#ifdef MRFT_X_SLAM
     ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.20;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.id = block_id::MRFT_X;
+#endif
 
+#ifdef MRFT_Y_SLAM
     ((UpdateController*)update_controller_mrft_y)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.relay_amp = 0.20;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.id = block_id::MRFT_Y;
+#endif
 
+#ifdef MRFT_Z_SLAM
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.id = block_id::MRFT_Z;
-    
+#endif
 
     ((ResetController*)reset_z)->target_block = block_id::PID_Z;
 
