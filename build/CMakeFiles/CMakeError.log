@@ -314,3 +314,43 @@ The output was:
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 
+Determining if the include file pthread.h exists failed with the following output:
+Change Dir: /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7b411/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7b411.dir/build.make CMakeFiles/cmTC_7b411.dir/build
+make[1]: Entering directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7b411.dir/CheckIncludeFile.c.o
+/usr/bin/clang-6.0    -o CMakeFiles/cmTC_7b411.dir/CheckIncludeFile.c.o   -c /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_7b411
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b411.dir/link.txt --verbose=1
+/usr/bin/clang-6.0      -rdynamic CMakeFiles/cmTC_7b411.dir/CheckIncludeFile.c.o  -o cmTC_7b411 
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_7b411.dir/build.make:97: recipe for target 'cmTC_7b411' failed
+make[1]: *** [cmTC_7b411] Error 1
+make[1]: Leaving directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7b411/fast' failed
+make: *** [cmTC_7b411/fast] Error 2
+
+
+Determining if the include file pthread.h exists failed with the following output:
+Change Dir: /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_61ed7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_61ed7.dir/build.make CMakeFiles/cmTC_61ed7.dir/build
+make[1]: Entering directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_61ed7.dir/CheckIncludeFile.c.o
+/usr/bin/clang-6.0    -o CMakeFiles/cmTC_61ed7.dir/CheckIncludeFile.c.o   -c /run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_61ed7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61ed7.dir/link.txt --verbose=1
+/usr/bin/clang-6.0      -rdynamic CMakeFiles/cmTC_61ed7.dir/CheckIncludeFile.c.o  -o cmTC_61ed7 
+/usr/bin/ld: final link failed: Operation not supported
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+CMakeFiles/cmTC_61ed7.dir/build.make:97: recipe for target 'cmTC_61ed7' failed
+make[1]: *** [cmTC_61ed7] Error 1
+make[1]: Leaving directory '/run/user/1000/gvfs/sftp:host=10.0.0.187,user=ku-t2/home/ku-t2/catkin_ws_HEAR/src/HEAR_Navio2_MC/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_61ed7/fast' failed
+make: *** [cmTC_61ed7/fast] Error 2
+
+
