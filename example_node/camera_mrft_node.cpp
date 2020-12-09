@@ -46,25 +46,25 @@ int main(int argc, char** argv) {
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
     #ifdef  MRFT_Y_CAMERA
-    ROSUnit* ros_pid_switch_y_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_pid_switch_y_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "pid_switch_y");
-    ROSUnit* ros_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "mrft_switch_y");
-    ROSUnit* ros_camera_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_camera_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "camera_pid_switch_y");
     #endif
 
     #ifdef  MRFT_Z_CAMERA
-    ROSUnit* ros_pid_switch_z_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_pid_switch_z_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "pid_switch_z");
-    ROSUnit* ros_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "mrft_switch_z");
-    ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "mrft_switch_z");
     #endif
