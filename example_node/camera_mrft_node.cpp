@@ -333,10 +333,8 @@ int main(int argc, char** argv) {
     Logger::getAssignedLogger()->log("FlightScenario main_scenario",LoggerLevel::Info);
     MissionScenario main_scenario;
 
-    #ifdef MRFT_Z_CAMERA
-    main_scenario.AddMissionPipeline(&mrft_pipeline);
-    #endif
 
+    main_scenario.AddMissionPipeline(&mrft_pipeline);
     main_scenario.StartScenario();
     Logger::getAssignedLogger()->log("Main Done",LoggerLevel::Info);
     std::cout << "OK \n";
