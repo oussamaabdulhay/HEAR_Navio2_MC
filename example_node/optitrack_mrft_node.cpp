@@ -26,8 +26,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#define MRFT_Z_CAMERA
-#undef MRFT_Y_CAMERA
+#define Z_ONLY
+#undef Y_ONLY
 
 
 int main(int argc, char** argv) {
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
-    #ifdef  MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     ROSUnit* ros_optitrack_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "optitrack_mrft_switch_y");
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
                                                                       "camera_pid_switch_y");
     #endif
 
-    #ifdef  MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     ROSUnit* ros_optitrack_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "optitrack_mrft_switch_z");
@@ -97,13 +97,13 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_pid_yaw = new UpdateController();
     MissionElement* update_controller_pid_yaw_rate = new UpdateController();
 
-    #ifdef  MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     MissionElement* update_controller_mrft_y = new UpdateController();
     MissionElement* pid_to_mrft_switch_y=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_y=new SwitchTrigger(1);
     #endif
 
-    #ifdef  MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     MissionElement* update_controller_mrft_z = new UpdateController();
     MissionElement* pid_to_mrft_switch_z=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_z=new SwitchTrigger(1);
@@ -139,19 +139,19 @@ int main(int argc, char** argv) {
     update_controller_pid_yaw->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
 
-    #ifdef  MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     update_controller_mrft_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    pid_to_mrft_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    pid_to_mrft_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_optitrack_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
    
-    mrft_to_pid_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    mrft_to_pid_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_optitrack_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     
     #endif
 
-    #ifdef  MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     update_controller_mrft_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    pid_to_mrft_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    pid_to_mrft_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_optitrack_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
   
-    mrft_to_pid_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    mrft_to_pid_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_optitrack_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
  
     #endif
    
@@ -249,7 +249,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
-    #ifdef  MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     ((UpdateController*)update_controller_mrft_y)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.relay_amp = 0.20;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.bias = 0.0;
@@ -258,7 +258,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_mrft_y)->mrft_data.id = block_id::MRFT_Y;
     #endif
 
-    #ifdef  MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
@@ -297,11 +297,11 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
     mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
 
-    #ifdef MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     mrft_pipeline.addElement((MissionElement*)update_controller_mrft_z);
     #endif
 
-    #ifdef MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     mrft_pipeline.addElement((MissionElement*)update_controller_mrft_y);
     #endif
 
@@ -320,11 +320,11 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)&wait_1s);
     //mrft_pipeline.addElement((MissionElement*)user_command);
 
-    #ifdef MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_z);
     #endif
 
-    #ifdef MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_y);
     #endif
 
@@ -332,11 +332,11 @@ int main(int argc, char** argv) {
     //mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
-    #ifdef MRFT_Z_CAMERA
+    #ifdef Z_ONLY
     mrft_pipeline.addElement((MissionElement*)mrft_to_pid_switch_z);
     #endif 
 
-    #ifdef MRFT_Y_CAMERA
+    #ifdef Y_ONLY
     mrft_pipeline.addElement((MissionElement*)mrft_to_pid_switch_y);
     #endif 
     
