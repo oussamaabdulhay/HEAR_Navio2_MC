@@ -27,7 +27,7 @@
 
 
 #define MRFT_Z_CAMERA
-#define MRFT_Y_CAMERA
+#undef MRFT_Y_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -276,8 +276,16 @@ int main(int argc, char** argv) {
     Wait wait_1s;
     wait_1s.wait_time_ms=1000;
 
+    Wait wait_3s;
+    wait_3s.wait_time_ms=3000;
+
+    Wait wait_7s;
+    wait_7s.wait_time_ms=7000;
+
     Wait wait_100ms;
     wait_100ms.wait_time_ms=100;
+
+
 
 
     MissionPipeline mrft_pipeline;
@@ -308,10 +316,12 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)arm_motors);
-    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)&wait_3s);
+    //mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    //mrft_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef MRFT_Z_CAMERA
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_z);
@@ -321,7 +331,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_y);
     #endif
 
-    mrft_pipeline.addElement((MissionElement*)user_command);  
+    mrft_pipeline.addElement((MissionElement*)&wait_7s);
+    //mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef MRFT_Z_CAMERA
@@ -332,7 +343,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)mrft_to_pid_switch_y);
     #endif 
     
-    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    //mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)land_relative_waypoint);
