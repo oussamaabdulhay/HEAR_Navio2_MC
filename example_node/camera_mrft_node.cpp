@@ -262,8 +262,8 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 10.0;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=5;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 100.0;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=7;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.id = block_id::MRFT_Z;
     #endif
     
