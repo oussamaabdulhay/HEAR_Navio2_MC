@@ -260,7 +260,7 @@ int main(int argc, char** argv) {
 
     #ifdef Z_ONLY
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.05; //0.1;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 100.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=5;
@@ -313,12 +313,12 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)arm_motors);
-    mrft_pipeline.addElement((MissionElement*)&wait_3s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_3s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef Z_ONLY
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_z);
@@ -328,8 +328,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_y);
     #endif
 
-    mrft_pipeline.addElement((MissionElement*)&wait_7s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);  
+    //mrft_pipeline.addElement((MissionElement*)&wait_7s);
+    mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef Z_ONLY
@@ -340,8 +340,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)mrft_to_pid_switch_y);
     #endif 
     
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)land_relative_waypoint);
