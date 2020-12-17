@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
     update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
 
     #ifdef MRFT_Y_CAMERA
-    update_controller_mrft_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_mrft_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     pid_to_mrft_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
    
     mrft_to_pid_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef MRFT_Z_CAMERA
-    update_controller_mrft_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    update_controller_mrft_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     pid_to_mrft_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
   
     mrft_to_pid_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
@@ -263,7 +263,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 10.0;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=1;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=5;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.id = block_id::MRFT_Z;
     #endif
     
@@ -313,12 +313,12 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)arm_motors);
-    mrft_pipeline.addElement((MissionElement*)&wait_3s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_3s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef MRFT_Z_CAMERA
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_z);
@@ -328,8 +328,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)pid_to_mrft_switch_y);
     #endif
 
-    mrft_pipeline.addElement((MissionElement*)&wait_7s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);  
+    //mrft_pipeline.addElement((MissionElement*)&wait_7s);
+    mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef MRFT_Z_CAMERA
@@ -340,8 +340,8 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)mrft_to_pid_switch_y);
     #endif 
     
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    //mrft_pipeline.addElement((MissionElement*)user_command);
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)land_relative_waypoint);
