@@ -27,8 +27,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 #define MRFT_ROLL
-#define MRFT_PITCH
-#define MRFT_Z_CHAN
+//#define MRFT_PITCH
+//#define MRFT_Z_CHAN
 
 
 int main(int argc, char** argv) {
