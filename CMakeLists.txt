@@ -27,7 +27,10 @@ include_directories(
 add_executable(mc_example_node example_node/example_node.cpp)
 add_executable(mc_slam_mrft_node example_node/SLAM_tuning_node.cpp)
 add_executable(mc_translation_node example_node/traslation_node.cpp)
+add_executable(mc_test_node example_node/test_node.cpp)
+
 
 target_link_libraries(mc_example_node ${catkin_LIBRARIES})
+target_link_libraries(mc_test_node ${catkin_LIBRARIES})
 target_link_libraries(mc_slam_mrft_node ${catkin_LIBRARIES})
 target_link_libraries(mc_translation_node ${catkin_LIBRARIES})
