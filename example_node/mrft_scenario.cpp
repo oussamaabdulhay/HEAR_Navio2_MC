@@ -26,8 +26,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_RestNormSettingsClnt.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
-#define MRFT_ROLL
-//#define MRFT_PITCH
+//#define MRFT_ROLL_CHAN
+#define MRFT_PITCH_CHAN
 //#define MRFT_Z_CHAN
 
 
@@ -46,13 +46,13 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
-#ifdef  MRFT_ROLL
+#ifdef  MRFT_ROLL_CHAN
     ROSUnit* ros_mrft_trigger_roll = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "mrft_switch_roll");
 #endif
     
-#ifdef  MRFT_PITCH
+#ifdef  MRFT_PITCH_CHAN
     ROSUnit* ros_mrft_trigger_pitch = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "mrft_switch_pitch");
@@ -92,13 +92,13 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_pid_yaw = new UpdateController();
     MissionElement* update_controller_pid_yaw_rate = new UpdateController();
 
-    #ifdef  MRFT_ROLL
+    #ifdef  MRFT_ROLL_CHAN
     MissionElement* update_controller_mrft_roll = new UpdateController();
     MissionElement* mrft_switch_on_roll = new SwitchTrigger(3);
     MissionElement* mrft_switch_off_roll = new SwitchTrigger(1);
     #endif
 
-    #ifdef  MRFT_PITCH
+    #ifdef  MRFT_PITCH_CHAN
     MissionElement* update_controller_mrft_pitch = new UpdateController();
     MissionElement* mrft_switch_on_pitch = new SwitchTrigger(3);
     MissionElement* mrft_switch_off_pitch = new SwitchTrigger(1);
@@ -140,13 +140,13 @@ int main(int argc, char** argv) {
     update_controller_pid_yaw->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
 
-    #ifdef  MRFT_ROLL
+    #ifdef  MRFT_ROLL_CHAN
     update_controller_mrft_roll->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     mrft_switch_on_roll->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_mrft_trigger_roll->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     mrft_switch_off_roll->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_mrft_trigger_roll->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);   
     #endif
 
-    #ifdef  MRFT_PITCH
+    #ifdef  MRFT_PITCH_CHAN
     update_controller_mrft_pitch->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     mrft_switch_on_pitch->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_mrft_trigger_pitch->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     mrft_switch_off_pitch->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_mrft_trigger_pitch->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);   
@@ -252,18 +252,18 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
-#ifdef MRFT_ROLL
+#ifdef MRFT_ROLL_CHAN
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.20;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.04;
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.bias = 0.0;
-    ((UpdateController*)update_controller_mrft_roll)->mrft_data.id = block_id::MRFT_X;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.id = block_id::MRFT_ROLL;
 #endif
 
-#ifdef MRFT_PITCH
+#ifdef MRFT_PITCH_CHAN
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.20;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.04;
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.bias = 0.0;
-    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.id = block_id::MRFT_Y;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.id = block_id::MRFT_PITCH;
 #endif
 
 #ifdef MRFT_Z_CHAN
@@ -294,11 +294,11 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
     mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
 
-    #ifdef MRFT_ROLL
+    #ifdef MRFT_ROLL_CHAN
     mrft_pipeline.addElement((MissionElement*)update_controller_mrft_roll);
     #endif
 
-    #ifdef MRFT_PITCH
+    #ifdef MRFT_PITCH_CHAN
     mrft_pipeline.addElement((MissionElement*)update_controller_mrft_pitch);
     #endif
 
@@ -319,11 +319,11 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
     mrft_pipeline.addElement((MissionElement*)user_command);
 
-    #ifdef MRFT_ROLL
+    #ifdef MRFT_ROLL_CHAN
     mrft_pipeline.addElement((MissionElement*)mrft_switch_on_roll);
     #endif
 
-    #ifdef MRFT_PITCH
+    #ifdef MRFT_PITCH_CHAN
     mrft_pipeline.addElement((MissionElement*)mrft_switch_on_pitch);
     #endif
 
@@ -334,11 +334,11 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
-    #ifdef MRFT_ROLL
+    #ifdef MRFT_ROLL_CHAN
     mrft_pipeline.addElement((MissionElement*)mrft_switch_off_roll);
     #endif
 
-    #ifdef MRFT_PITCH
+    #ifdef MRFT_PITCH_CHAN
     mrft_pipeline.addElement((MissionElement*)mrft_switch_off_pitch);
     #endif
 
