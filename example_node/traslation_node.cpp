@@ -45,28 +45,28 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
-    #ifdef  TRANSLATION_Y_CAMERA
-    ROSUnit* ros_pid_switch_y_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    #ifdef TRANSLATION_Y_CAMERA
+    ROSUnit* ros_optitrack_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "pid_switch_y");
-    ROSUnit* ros_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+                                                                      "optitrack_mrft_switch_y");
+    ROSUnit* ros_camera_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "mrft_switch_y");
-    ROSUnit* ros_camera_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+                                                                      "camera_mrft_switch_y");
+    ROSUnit* ros_camera_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "camera_pid_switch_y");
     #endif
 
-    #ifdef  TRANSLATION_Z_CAMERA
-    ROSUnit* ros_pid_switch_z_optitrack = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    #ifdef TRANSLATION_Z_CAMERA
+    ROSUnit* ros_optitrack_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "pid_switch_z");
-    ROSUnit* ros_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+                                                                      "optitrack_mrft_switch_z");
+    ROSUnit* ros_camera_mrft_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "mrft_switch_z");
-    ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+                                                                      "camera_mrft_switch_z");
+    ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "mrft_switch_z");
+                                                                      "camera_pid_switch_z");
     #endif
 
     ROSUnit* ros_pos_sub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber,
@@ -96,18 +96,17 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_pid_pitch = new UpdateController();
     MissionElement* update_controller_pid_yaw = new UpdateController();
     MissionElement* update_controller_pid_yaw_rate = new UpdateController();
-    
 
-    #ifdef  TRANSLATION_Y_CAMERA
+    #ifdef TRANSLATION_Y_CAMERA
     MissionElement* update_controller_camera_pid_y = new UpdateController();
-    MissionElement* pid_optitrack_to_pid_camera_switch_y=new SwitchTrigger(3);
-    MissionElement* pid_camera_to_pid_optitrack_switch_y=new SwitchTrigger(1);
+    MissionElement* pid_opti_to_camera_switch_y=new SwitchTrigger(3);
+    MissionElement* camera_to_pid_opti_switch_y=new SwitchTrigger(1);
     #endif
 
-    #ifdef  TRANSLATION_Z_CAMERA
+    #ifdef TRANSLATION_Z_CAMERA
     MissionElement* update_controller_camera_pid_z = new UpdateController();
-    MissionElement* pid_optitrack_to_pid_camera_switch_z=new SwitchTrigger(3);
-    MissionElement* pid_camera_to_pid_optitrack_switch_z=new SwitchTrigger(1);
+    MissionElement* pid_opti_to_camera_switch_z=new SwitchTrigger(3);
+    MissionElement* camera_to_pid_opti_switch_z=new SwitchTrigger(1);
     #endif
 
     MissionElement* reset_z = new ResetController();
@@ -140,23 +139,18 @@ int main(int argc, char** argv) {
     update_controller_pid_yaw->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     update_controller_pid_yaw_rate->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
 
-    #ifdef  TRANSLATION_Y_CAMERA
+    #ifdef TRANSLATION_Y_CAMERA
     update_controller_camera_pid_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    pid_optitrack_to_pid_camera_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_pid_switch_y_optitrack)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    pid_optitrack_to_pid_camera_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-   
-    pid_camera_to_pid_optitrack_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_pid_switch_y_optitrack)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    pid_camera_to_pid_optitrack_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    pid_opti_to_camera_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    camera_to_pid_opti_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     
     #endif
 
-    #ifdef  TRANSLATION_Z_CAMERA
+    #ifdef TRANSLATION_Z_CAMERA
     update_controller_camera_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    pid_optitrack_to_pid_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_pid_switch_z_optitrack)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    pid_optitrack_to_pid_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-   
-    pid_camera_to_pid_optitrack_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_pid_switch_z_optitrack)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    pid_camera_to_pid_optitrack_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    pid_opti_to_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    camera_to_pid_opti_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+ 
     #endif
    
     ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
@@ -217,24 +211,6 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_z)->pid_data.dt = (float)1.0/120.0;
     ((UpdateController*)update_controller_pid_z)->pid_data.id = block_id::PID_Z;
 
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kp = 0.7176;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kd =  0.4208;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kdd = 0.0;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.anti_windup = 0;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.dt = (float)1.0/120.0;
-    ((UpdateController*)update_controller_camera_pid_y)->pid_data.id = block_id::PID_Camera_Y;
-
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kp = 0.785493; 
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.ki = 0.098; 
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kd = 0.239755; 
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kdd = 0.0;
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.anti_windup = 0;
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.dt = (float)1.0/120.0;
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.id = block_id::PID_Camera_Z;
-
     ((UpdateController*)update_controller_pid_roll)->pid_data.kp = 0.3227;
     ((UpdateController*)update_controller_pid_roll)->pid_data.ki = 0.0;
     ((UpdateController*)update_controller_pid_roll)->pid_data.kd = 0.0558;
@@ -271,13 +247,44 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
+    #ifdef TRANSLATION_Y_CAMERA
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kp = 0.785493; 
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.ki = 0.098; 
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kd = 0.239755; 
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.kdd = 0.0;
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.anti_windup = 0;
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.en_pv_derivation = 1;
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.dt = (float)1.0/120.0;
+    ((UpdateController*)update_controller_camera_pid_y)->pid_data.id = block_id::PID_Camera_Y;
+    #endif
+
+    #ifdef TRANSLATION_Z_CAMERA
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kp = 0.785493; 
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.ki = 0.098; 
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kd = 0.239755; 
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kdd = 0.0;
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.anti_windup = 0;
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.en_pv_derivation = 1;
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.dt = (float)1.0/120.0;
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.id = block_id::PID_Camera_Z;
+    #endif
+    
+
     ((ResetController*)reset_z)->target_block = block_id::PID_Z;
 
     Wait wait_1s;
     wait_1s.wait_time_ms=1000;
 
+    Wait wait_3s;
+    wait_3s.wait_time_ms=3000;
+
+    Wait wait_7s;
+    wait_7s.wait_time_ms=7000;
+
     Wait wait_100ms;
     wait_100ms.wait_time_ms=100;
+
+
 
 
     MissionPipeline mrft_pipeline;
@@ -308,30 +315,34 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
     mrft_pipeline.addElement((MissionElement*)arm_motors);
+    //mrft_pipeline.addElement((MissionElement*)&wait_3s);
     mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
     mrft_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef TRANSLATION_Z_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_optitrack_to_pid_camera_switch_z);
+    mrft_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
     #endif
 
     #ifdef TRANSLATION_Y_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_optitrack_to_pid_camera_switch_y);
+    mrft_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_y);
     #endif
 
+    //mrft_pipeline.addElement((MissionElement*)&wait_7s);
     mrft_pipeline.addElement((MissionElement*)user_command);  
     mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef TRANSLATION_Z_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_camera_to_pid_optitrack_switch_z);
+    mrft_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_z);
     #endif 
 
     #ifdef TRANSLATION_Y_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_camera_to_pid_optitrack_switch_y);
+    mrft_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_y);
     #endif 
     
+    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
     mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     mrft_pipeline.addElement((MissionElement*)&wait_100ms);
@@ -341,10 +352,8 @@ int main(int argc, char** argv) {
     Logger::getAssignedLogger()->log("FlightScenario main_scenario",LoggerLevel::Info);
     MissionScenario main_scenario;
 
-    #ifdef TRANSLATION_Z_CAMERA
-    main_scenario.AddMissionPipeline(&mrft_pipeline);
-    #endif
 
+    main_scenario.AddMissionPipeline(&mrft_pipeline);
     main_scenario.StartScenario();
     Logger::getAssignedLogger()->log("Main Done",LoggerLevel::Info);
     std::cout << "OK \n";
