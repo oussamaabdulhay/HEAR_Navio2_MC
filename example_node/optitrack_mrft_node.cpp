@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
                                                                       "camera_mrft_switch_z");
     ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
-                                                                      "mrft_switch_z");
+                                                                      "camera_pid_switch_z");
     #endif
 
     ROSUnit* ros_pos_sub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber,
