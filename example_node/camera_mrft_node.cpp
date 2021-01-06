@@ -26,8 +26,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#undef MRFT_Z_CAMERA
-#define MRFT_Y_CAMERA
+#define MRFT_Z_CAMERA
+#undef MRFT_Y_CAMERA
 
 
 int main(int argc, char** argv) {
