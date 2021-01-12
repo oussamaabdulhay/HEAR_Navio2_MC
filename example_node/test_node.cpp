@@ -15,7 +15,7 @@
 #include "HEAR_mission/SetAbsoluteWaypoint.hpp"
 #include "HEAR_mission/UpdateController.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerClnt.hpp"
-//
+#include "HEAR_mission/SwitchTrigger.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_UpdateControllerSrv.hpp"
 #include "HEAR_control/PIDController.hpp"
 //
@@ -46,6 +46,12 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
+    ROSUnit* ros_kalmanFilter_switch = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                            ROSUnit_msg_type::ROSUnit_Float, 
+                                                            "kalman_filter_switch");
+    ROSUnit* ros_reset_kalmanFilter = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                            ROSUnit_msg_type::ROSUnit_Float, 
+                                                            "kalman_filter_reset");
     ROSUnit* ros_pos_sub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber,
                                                             ROSUnit_msg_type::ROSUnit_Point,
                                                             "global2inertial/position");
@@ -82,6 +88,8 @@ int main(int argc, char** argv) {
     MissionElement* user_command = new UserCommand();
 
     // MissionElement* state_monitor = new StateMonitor();
+    MissionElement* switch_to_kalmanFilter=new SwitchTrigger(3);
+    MissionElement* reset_kalmanFilter=new SwitchTrigger(3);
 
     MissionElement* set_restricted_norm_settings = new SetRestNormSettings(true, false, .5); 
 
@@ -150,6 +158,9 @@ int main(int argc, char** argv) {
     absolute_waypoint_square_6->getPorts()[(int)SetAbsoluteWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
     absolute_waypoint_square_7->getPorts()[(int)SetAbsoluteWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
     land_relative_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::OP_0]->connect(ros_set_path_clnt->getPorts()[(int)ROSUnit_SetPosesClnt::ports_id::IP_0]);
+
+    switch_to_kalmanFilter->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_kalmanFilter_switch->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    reset_kalmanFilter->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect(ros_reset_kalmanFilter->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
 
     //*************Setting Flight Elements*************
     #ifdef SMALL_HEXA
@@ -315,17 +326,11 @@ int main(int argc, char** argv) {
     testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
     testing_pipeline.addElement((MissionElement*)user_command);
-    // testing_pipeline.addElement((MissionElement*)waypoint_set_rest_norm_settings);   
-    // testing_pipeline.addElement((MissionElement*)&wait_100ms);
-    // testing_pipeline.addElement((MissionElement*)absolute_origin_1m_height);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_1);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_2);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_3);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_4);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_5);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_6);
-    // testing_pipeline.addElement((MissionElement*)absolute_waypoint_square_7);
-    // testing_pipeline.addElement((MissionElement*)user_command);
+    testing_pipeline.addElement((MissionElement*)reset_kalmanFilter);
+    testing_pipeline.addElement((MissionElement*)&wait_1s);
+    //testing_pipeline.addElement((MissionElement*)user_command);
+    //testing_pipeline.addElement((MissionElement*)switch_to_kalmanFilter);
+    testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
     testing_pipeline.addElement((MissionElement*)land_relative_waypoint);
