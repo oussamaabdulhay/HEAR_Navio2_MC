@@ -323,11 +323,11 @@ int main(int argc, char** argv) {
     testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    testing_pipeline.addElement((MissionElement*)user_command);
-    testing_pipeline.addElement((MissionElement*)reset_kalmanFilter);
-    testing_pipeline.addElement((MissionElement*)&wait_1s);
-    testing_pipeline.addElement((MissionElement*)user_command);
-    testing_pipeline.addElement((MissionElement*)switch_to_kalmanFilter);
+    // testing_pipeline.addElement((MissionElement*)user_command);
+    // testing_pipeline.addElement((MissionElement*)reset_kalmanFilter);
+    // testing_pipeline.addElement((MissionElement*)&wait_1s);
+    // testing_pipeline.addElement((MissionElement*)user_command);
+    // testing_pipeline.addElement((MissionElement*)switch_to_kalmanFilter);
     testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
