@@ -319,13 +319,13 @@ int main(int argc, char** argv) {
     testing_pipeline.addElement((MissionElement*)&wait_1s);
     testing_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
     testing_pipeline.addElement((MissionElement*)initial_pose_waypoint);
-    testing_pipeline.addElement((MissionElement*)&wait_7s);
-    //testing_pipeline.addElement((MissionElement*)user_command);
+    //testing_pipeline.addElement((MissionElement*)&wait_7s);
+    testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)&wait_100ms);
     testing_pipeline.addElement((MissionElement*)arm_motors);
-    testing_pipeline.addElement((MissionElement*)&wait_1s);
-    //testing_pipeline.addElement((MissionElement*)user_command);
+    //testing_pipeline.addElement((MissionElement*)&wait_1s);
+    testing_pipeline.addElement((MissionElement*)user_command);
     testing_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     testing_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
     // testing_pipeline.addElement((MissionElement*)user_command);
