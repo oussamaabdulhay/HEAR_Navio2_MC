@@ -26,7 +26,7 @@
 
 
 #define Z_ONLY
-#define X_ONLY
+#undef X_ONLY
 
 
 int main(int argc, char** argv) {
