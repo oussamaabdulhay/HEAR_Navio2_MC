@@ -95,10 +95,10 @@ int main(int argc, char** argv) {
     MissionElement* waypoint_set_rest_norm_settings = new SetRestNormSettings(true, false, 0.40); 
 
     MissionElement* set_height_offset = new SetHeightOffset(); 
-    MissionElement* initial_pose_waypoint = new SetRelativeWaypoint(0., 0., 0., 0.); //TODO: SetRelativeWaypoint needs substantial refactoring
+    MissionElement* initial_pose_waypoint = new SetRelativeWaypoint(0., 0., 0., 1.578); //TODO: SetRelativeWaypoint needs substantial refactoring
     
     #ifdef TESTING
-    MissionElement* takeoff_relative_waypoint = new SetRelativeWaypoint(0., 0., 1.0, 0.);
+    MissionElement* takeoff_relative_waypoint = new SetRelativeWaypoint(0., 0., 1.0, 1.578);
     #endif
 
     //MissionElement* absolute_zero_Z_relative_waypoint = new SetRelativeWaypoint(0., 0., -10, 0.); 
