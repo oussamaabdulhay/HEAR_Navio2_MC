@@ -250,7 +250,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.no_switch_delay_in_ms = 100.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.num_of_peak_conf_samples=7;
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.id = block_id::MRFT_Y;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.id = block_id::MRFT_X;
     #endif
 
     #ifdef MRFT_Z_CAMERA
