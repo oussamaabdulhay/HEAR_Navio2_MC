@@ -25,8 +25,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#undef Z_ONLY
-#define X_ONLY
+#define Z_ONLY
+#undef X_ONLY
 
 
 int main(int argc, char** argv) {
@@ -258,7 +258,7 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef Z_ONLY
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = 0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 10.0;
