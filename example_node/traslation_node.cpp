@@ -286,73 +286,74 @@ int main(int argc, char** argv) {
 
 
 
-    MissionPipeline mrft_pipeline;
+    MissionPipeline translation_pipeline;
 
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
+    translation_pipeline.addElement((MissionElement*)&wait_1s);
     
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_x);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_y);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_z);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_roll);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_pitch);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
-    mrft_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_x);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_y);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_z);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_roll);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_pitch);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_yaw);
+    translation_pipeline.addElement((MissionElement*)update_controller_pid_yaw_rate);
 
     #ifdef TRANSLATION_Z_CAMERA
-    mrft_pipeline.addElement((MissionElement*)update_controller_camera_pid_z);
+    translation_pipeline.addElement((MissionElement*)update_controller_camera_pid_z);
     #endif
 
     #ifdef TRANSLATION_X_CAMERA
-    mrft_pipeline.addElement((MissionElement*)update_controller_camera_pid_y);
+    translation_pipeline.addElement((MissionElement*)update_controller_camera_pid_x);
     #endif
 
-    mrft_pipeline.addElement((MissionElement*)set_height_offset); //TODO: (CHECK Desc) Set a constant height command/reference based on the current pos
-    mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    mrft_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
-    mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
-    mrft_pipeline.addElement((MissionElement*)user_command);
-    mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
-    mrft_pipeline.addElement((MissionElement*)&wait_100ms);
-    mrft_pipeline.addElement((MissionElement*)arm_motors);
-    //mrft_pipeline.addElement((MissionElement*)&wait_3s);
-    mrft_pipeline.addElement((MissionElement*)user_command);
-    mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
-    mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    mrft_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)set_height_offset); //TODO: (CHECK Desc) Set a constant height command/reference based on the current pos
+    translation_pipeline.addElement((MissionElement*)&wait_1s);
+    translation_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
+    translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
+    //translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
+    translation_pipeline.addElement((MissionElement*)&wait_100ms);
+    translation_pipeline.addElement((MissionElement*)&wait_7s);
+    translation_pipeline.addElement((MissionElement*)arm_motors);
+    translation_pipeline.addElement((MissionElement*)&wait_7s);
+    //translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
+    translation_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    translation_pipeline.addElement((MissionElement*)&wait_3s);
+    //translation_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef TRANSLATION_Z_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
+    translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
     #endif
 
     #ifdef TRANSLATION_X_CAMERA
-    mrft_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
+    translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
 
-    //mrft_pipeline.addElement((MissionElement*)&wait_7s);
-    mrft_pipeline.addElement((MissionElement*)user_command);  
-    mrft_pipeline.addElement((MissionElement*)initial_pose_waypoint);
+    translation_pipeline.addElement((MissionElement*)&wait_7s);
+    //translation_pipeline.addElement((MissionElement*)user_command);  
+    translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef TRANSLATION_Z_CAMERA
-    mrft_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_z);
+    translation_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_z);
     #endif 
 
     #ifdef TRANSLATION_X_CAMERA
-    mrft_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_x);
+    translation_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_x);
     #endif 
     
-    //mrft_pipeline.addElement((MissionElement*)&wait_1s);
-    mrft_pipeline.addElement((MissionElement*)user_command);
-    mrft_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
-    mrft_pipeline.addElement((MissionElement*)&wait_100ms);
-    mrft_pipeline.addElement((MissionElement*)land_relative_waypoint);
+    translation_pipeline.addElement((MissionElement*)&wait_1s);
+    //translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
+    translation_pipeline.addElement((MissionElement*)&wait_100ms);
+    translation_pipeline.addElement((MissionElement*)land_relative_waypoint);
 
 
     Logger::getAssignedLogger()->log("FlightScenario main_scenario",LoggerLevel::Info);
     MissionScenario main_scenario;
 
 
-    main_scenario.AddMissionPipeline(&mrft_pipeline);
+    main_scenario.AddMissionPipeline(&translation_pipeline);
     main_scenario.StartScenario();
     Logger::getAssignedLogger()->log("Main Done",LoggerLevel::Info);
     std::cout << "OK \n";
