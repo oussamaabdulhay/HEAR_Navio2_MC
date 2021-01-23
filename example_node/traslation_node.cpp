@@ -310,17 +310,17 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)&wait_1s);
     translation_pipeline.addElement((MissionElement*)set_restricted_norm_settings);
     translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
-    //translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)user_command);
     translation_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     translation_pipeline.addElement((MissionElement*)&wait_100ms);
-    translation_pipeline.addElement((MissionElement*)&wait_7s);
+    //translation_pipeline.addElement((MissionElement*)&wait_7s);
     translation_pipeline.addElement((MissionElement*)arm_motors);
-    translation_pipeline.addElement((MissionElement*)&wait_7s);
-    //translation_pipeline.addElement((MissionElement*)user_command);
+    //translation_pipeline.addElement((MissionElement*)&wait_7s);
+    translation_pipeline.addElement((MissionElement*)user_command);
     translation_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     translation_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    translation_pipeline.addElement((MissionElement*)&wait_3s);
-    //translation_pipeline.addElement((MissionElement*)user_command);
+    //translation_pipeline.addElement((MissionElement*)&wait_3s);
+    translation_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef TRANSLATION_Z_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
@@ -330,8 +330,8 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
 
-    translation_pipeline.addElement((MissionElement*)&wait_7s);
-    //translation_pipeline.addElement((MissionElement*)user_command);  
+    //translation_pipeline.addElement((MissionElement*)&wait_7s);
+    translation_pipeline.addElement((MissionElement*)user_command);  
     translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef TRANSLATION_Z_CAMERA
@@ -342,8 +342,8 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_x);
     #endif 
     
-    translation_pipeline.addElement((MissionElement*)&wait_1s);
-    //translation_pipeline.addElement((MissionElement*)user_command);
+    //translation_pipeline.addElement((MissionElement*)&wait_1s);
+    translation_pipeline.addElement((MissionElement*)user_command);
     translation_pipeline.addElement((MissionElement*)land_set_rest_norm_settings);   
     translation_pipeline.addElement((MissionElement*)&wait_100ms);
     translation_pipeline.addElement((MissionElement*)land_relative_waypoint);
