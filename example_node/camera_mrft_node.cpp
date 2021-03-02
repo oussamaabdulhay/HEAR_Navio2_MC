@@ -25,6 +25,7 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
+
 #undef MRFT_Z_CAMERA
 #define MRFT_X_CAMERA
 
@@ -44,6 +45,9 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
+    ROSUnit* ros_reset_kalman = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Float, 
+                                                                      "reset_kalman");
     #ifdef MRFT_X_CAMERA
     ROSUnit* ros_optitrack_mrft_switch_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
@@ -100,14 +104,17 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_mrft_x = new UpdateController();
     MissionElement* pid_to_mrft_switch_x=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_x=new SwitchTrigger(1);
+    
     #endif
 
     #ifdef MRFT_Z_CAMERA
     MissionElement* update_controller_mrft_z = new UpdateController();
     MissionElement* pid_to_mrft_switch_z=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_z=new SwitchTrigger(1);
-    #endif
+    MissionElement* mrft_to_pid_switch_x=new SwitchTrigger(1);
 
+    #endif
+    MissionElement* kalman_filter_reset=new SwitchTrigger (1);
     MissionElement* reset_z = new ResetController();
 
     MissionElement* arm_motors = new Arm();
@@ -142,6 +149,7 @@ int main(int argc, char** argv) {
     update_controller_mrft_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     pid_to_mrft_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     mrft_to_pid_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    
     #endif
 
     #ifdef MRFT_Z_CAMERA
@@ -149,7 +157,8 @@ int main(int argc, char** argv) {
     pid_to_mrft_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     mrft_to_pid_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_mrft_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     #endif
-   
+
+    kalman_filter_reset->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_reset_kalman)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
     rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_1]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
     
@@ -312,6 +321,7 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    mrft_pipeline.addElement((MissionElement*)kalman_filter_reset);
     //mrft_pipeline.addElement((MissionElement*)&wait_1s);
     mrft_pipeline.addElement((MissionElement*)user_command);
 
