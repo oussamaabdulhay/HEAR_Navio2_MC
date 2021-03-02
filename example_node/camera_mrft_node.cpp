@@ -321,6 +321,7 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)kalman_filter_reset);
     //mrft_pipeline.addElement((MissionElement*)&wait_1s);
     mrft_pipeline.addElement((MissionElement*)user_command);
