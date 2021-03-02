@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
     MissionElement* initial_pose_waypoint = new SetRelativeWaypoint(0., 0., 0., 0.); //TODO: SetRelativeWaypoint needs substantial refactoring
     
     #ifdef TESTING
-    MissionElement* takeoff_relative_waypoint = new SetRelativeWaypoint(0., 0., 1.0, 0.);
+    MissionElement* takeoff_relative_waypoint = new SetRelativeWaypoint(0., 0., 2.0, 0.);
     #endif
 
     //MissionElement* absolute_zero_Z_relative_waypoint = new SetRelativeWaypoint(0., 0., -10, 0.); 
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     MissionElement* absolute_waypoint_square_5 = new SetAbsoluteWaypoint(1.5, -1.5, 1.0, 0.);
     MissionElement* absolute_waypoint_square_6 = new SetAbsoluteWaypoint(1.5, 0.0, 1.0, 0.);
     MissionElement* absolute_waypoint_square_7 = new SetAbsoluteWaypoint(0.0, 0.0, 1.0, 0.);
-    MissionElement* land_relative_waypoint = new SetRelativeWaypoint(0., 0., -2., 0.);
+    MissionElement* land_relative_waypoint = new SetRelativeWaypoint(0., 0., -2.5, 0.);
 
     //******************Connections***************
     update_controller_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect((ros_updt_ctr)->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
