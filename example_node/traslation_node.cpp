@@ -26,7 +26,7 @@
 
 
 #define TRANSLATION_Z_CAMERA
-#define TRANSLATION_X_CAMERA
+#undef TRANSLATION_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -44,6 +44,9 @@ int main(int argc, char** argv) {
     ROSUnit* ros_arm_srv = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                             ROSUnit_msg_type::ROSUnit_Bool, 
                                                             "arm");
+    ROSUnit* ros_reset_kalman = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Float, 
+                                                                      "reset_kalman");
     #ifdef TRANSLATION_X_CAMERA
     ROSUnit* ros_optitrack_mrft_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
@@ -108,6 +111,7 @@ int main(int argc, char** argv) {
     MissionElement* camera_to_pid_opti_switch_z=new SwitchTrigger(1);
     #endif
 
+    MissionElement* kalman_filter_reset=new SwitchTrigger (1);
     MissionElement* reset_z = new ResetController();
 
     MissionElement* arm_motors = new Arm();
@@ -151,7 +155,7 @@ int main(int argc, char** argv) {
     camera_to_pid_opti_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
  
     #endif
-   
+    kalman_filter_reset->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_reset_kalman)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
     rosunit_yaw_provider->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_1]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_1]);
     
@@ -247,24 +251,24 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef TRANSLATION_X_CAMERA
-    ((UpdateController*)update_controller_camera_pid_x)->pid_data.kp = 0.2783; 
+    ((UpdateController*)update_controller_camera_pid_x)->pid_data.kp = 0.6552; 
     ((UpdateController*)update_controller_camera_pid_x)->pid_data.ki = 0.0; 
-    ((UpdateController*)update_controller_camera_pid_x)->pid_data.kd = 0.2031; 
+    ((UpdateController*)update_controller_camera_pid_x)->pid_data.kd = 0.4782; 
     ((UpdateController*)update_controller_camera_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_pid_x)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_pid_x)->pid_data.dt = (float)1.0/60.0;
+    ((UpdateController*)update_controller_camera_pid_x)->pid_data.dt = (float)1.0/200.0;
     ((UpdateController*)update_controller_camera_pid_x)->pid_data.id = block_id::PID_Camera_X;
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kp = 0.5202; 
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kp = 1.1766; 
     ((UpdateController*)update_controller_camera_pid_z)->pid_data.ki = 0; 
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kd = 0.2098; 
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.kd = 0.3143; 
     ((UpdateController*)update_controller_camera_pid_z)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_pid_z)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_pid_z)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_pid_z)->pid_data.dt = (float)1.0/51.0;
+    ((UpdateController*)update_controller_camera_pid_z)->pid_data.dt = (float)1.0/200.0;
     ((UpdateController*)update_controller_camera_pid_z)->pid_data.id = block_id::PID_Camera_Z;
     #endif
     
@@ -319,6 +323,8 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)user_command);
     translation_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     translation_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)kalman_filter_reset);
     //translation_pipeline.addElement((MissionElement*)&wait_3s);
     translation_pipeline.addElement((MissionElement*)user_command);
 
