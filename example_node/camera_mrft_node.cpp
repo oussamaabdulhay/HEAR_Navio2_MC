@@ -254,7 +254,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef MRFT_X_CAMERA
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.67;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.77;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.20;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.no_switch_delay_in_ms = 100.0;
@@ -263,7 +263,7 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef MRFT_Z_CAMERA
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.67;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.15; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 100.0;
