@@ -283,9 +283,9 @@ int main(int argc, char** argv) {
     // ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.dt = (float)1.0/200.0;
     // ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.id = block_id::PID_Camera_Z;
 
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kp = 0.4535; //0.4535 //0.6562
+    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kp = 0.6562; //0.4535 //0.6562
     ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.ki = 0; 
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kd = 0.1829; //0.1829 //0.2647 
+    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kd = 0.2647; //0.1829 //0.2647 
     ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.en_pv_derivation = 1;
