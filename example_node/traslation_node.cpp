@@ -25,8 +25,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#define TRANSLATION_Z_CAMERA
-#undef TRANSLATION_X_CAMERA
+#undef TRANSLATION_Z_CAMERA
+#define TRANSLATION_X_CAMERA
 
 
 int main(int argc, char** argv) {
