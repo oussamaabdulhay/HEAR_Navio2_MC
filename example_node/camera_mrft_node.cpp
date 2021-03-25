@@ -111,9 +111,8 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_mrft_z = new UpdateController();
     MissionElement* pid_to_mrft_switch_z=new SwitchTrigger(3);
     MissionElement* mrft_to_pid_switch_z=new SwitchTrigger(1);
-    MissionElement* mrft_to_pid_switch_x=new SwitchTrigger(1);
-
     #endif
+    
     MissionElement* kalman_filter_reset=new SwitchTrigger (1);
     MissionElement* reset_z = new ResetController();
 
