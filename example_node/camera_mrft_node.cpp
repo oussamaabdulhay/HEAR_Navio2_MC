@@ -26,8 +26,8 @@
 
 
 
-#undef MRFT_Z_CAMERA
-#define MRFT_X_CAMERA
+#define MRFT_Z_CAMERA
+#undef MRFT_X_CAMERA
 
 
 int main(int argc, char** argv) {
