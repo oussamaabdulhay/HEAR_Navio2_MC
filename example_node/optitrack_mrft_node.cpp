@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
     
     #endif
 
-    #ifdef X_ONLY
+    #ifdef Y_ONLY
     update_controller_mrft_y->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_1_MRFT]);
     pid_to_mrft_switch_y->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_optitrack_mrft_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
    
