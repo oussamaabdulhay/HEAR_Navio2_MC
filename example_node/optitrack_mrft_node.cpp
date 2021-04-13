@@ -25,9 +25,9 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#undef Z_ONLY
+#define Z_ONLY
 #undef X_ONLY
-#define Y_ONLY
+#undef Y_ONLY
 
 
 int main(int argc, char** argv) {
