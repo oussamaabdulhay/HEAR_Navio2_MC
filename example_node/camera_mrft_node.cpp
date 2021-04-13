@@ -27,8 +27,8 @@
 
 
 #undef MRFT_Z_CAMERA
-#define MRFT_Y_CAMERA
-#undef MRFT_X_CAMERA
+#undef MRFT_Y_CAMERA
+#define MRFT_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -276,11 +276,11 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef MRFT_X_CAMERA
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.6475;
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.15;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.6875;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.1;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.no_switch_delay_in_ms = 100.0;
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.num_of_peak_conf_samples=7;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.num_of_peak_conf_samples=5;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.id = block_id::MRFT_X;
     #endif
 
