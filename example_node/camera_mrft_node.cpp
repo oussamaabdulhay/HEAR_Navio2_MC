@@ -26,9 +26,9 @@
 
 
 
-#undef MRFT_Z_CAMERA
+#define MRFT_Z_CAMERA
 #undef MRFT_Y_CAMERA
-#define MRFT_X_CAMERA
+#undef MRFT_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -296,10 +296,10 @@ int main(int argc, char** argv) {
 
     #ifdef MRFT_Z_CAMERA
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.2; //0.1;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.1; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 100.0;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=10;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=5;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.id = block_id::MRFT_Z;
     #endif
     
