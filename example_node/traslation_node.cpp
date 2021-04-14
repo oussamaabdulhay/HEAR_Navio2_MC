@@ -69,6 +69,9 @@ int main(int argc, char** argv) {
     ROSUnit* ros_camera_pid_switch_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "camera_pid_switch_z");
+    ROSUnit* ros_update_constant_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Float,
+                                                                      "update_constant_z");
     #endif
 
     ROSUnit* ros_pos_sub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber,
@@ -111,6 +114,7 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_camera_hovering_pid_z = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_z=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_z=new SwitchTrigger(1);
+    MissionElement* change_constant_z=new SwitchTrigger(0.3);
     #endif
 
     MissionElement* kalman_filter_reset=new SwitchTrigger (1);
@@ -157,6 +161,7 @@ int main(int argc, char** argv) {
     //update_controller_camera_tracking_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     pid_opti_to_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    change_constant_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     #endif
     kalman_filter_reset->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_reset_kalman)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
@@ -352,7 +357,10 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_Z_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
+    #endif
 
+    #ifdef TRANSLATION_Z_CAMERA
+    translation_pipeline.addElement((MissionElement*)change_constant_z);
     #endif
 
     #ifdef TRANSLATION_X_CAMERA
