@@ -159,8 +159,8 @@ int main(int argc, char** argv) {
     //update_controller_camera_tracking_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     pid_opti_to_camera_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    change_constant_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    constant_back_zero_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    change_constant_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    constant_back_zero_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
