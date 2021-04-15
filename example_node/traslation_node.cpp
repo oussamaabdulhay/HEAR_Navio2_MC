@@ -25,7 +25,7 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#undef TRANSLATION_Z_CAMERA
+#define TRANSLATION_Z_CAMERA
 #define TRANSLATION_X_CAMERA
 
 
@@ -57,6 +57,9 @@ int main(int argc, char** argv) {
     ROSUnit* ros_camera_pid_switch_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
                                                                       ROSUnit_msg_type::ROSUnit_Float,
                                                                       "camera_pid_switch_x");
+    ROSUnit* ros_update_constant_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Client,
+                                                                      ROSUnit_msg_type::ROSUnit_Float,
+                                                                      "update_constant_x");
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
@@ -107,6 +110,8 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_camera_hovering_pid_x = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_x=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_x=new SwitchTrigger(1);
+    MissionElement* change_constant_x=new SwitchTrigger(0.3);
+    MissionElement* constant_back_zero_x=new SwitchTrigger(0);
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
@@ -115,7 +120,7 @@ int main(int argc, char** argv) {
     MissionElement* pid_opti_to_camera_switch_z=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_z=new SwitchTrigger(1);
     MissionElement* change_constant_z=new SwitchTrigger(0.3);
-    MissionElement* constant_back_zero=new SwitchTrigger(0);
+    MissionElement* constant_back_zero_z=new SwitchTrigger(0);
     #endif
 
     MissionElement* kalman_filter_reset=new SwitchTrigger (1);
@@ -154,7 +159,8 @@ int main(int argc, char** argv) {
     //update_controller_camera_tracking_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     pid_opti_to_camera_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    
+    change_constant_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    constant_back_zero_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
@@ -163,7 +169,7 @@ int main(int argc, char** argv) {
     pid_opti_to_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     change_constant_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
-    constant_back_zero->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
+    constant_back_zero_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     #endif
     kalman_filter_reset->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_reset_kalman)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     ros_pos_sub->getPorts()[(int)ROSUnit_PointSub::ports_id::OP_0]->connect(initial_pose_waypoint->getPorts()[(int)SetRelativeWaypoint::ports_id::IP_0]);
@@ -361,16 +367,22 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
     #endif
 
-    #ifdef TRANSLATION_Z_CAMERA
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)change_constant_z);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)constant_back_zero);
-    #endif
 
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
+
+    #ifdef TRANSLATION_Z_CAMERA
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_z);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_x);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
+    #endif
+
 
     //translation_pipeline.addElement((MissionElement*)&wait_7s);
     translation_pipeline.addElement((MissionElement*)user_command);  
