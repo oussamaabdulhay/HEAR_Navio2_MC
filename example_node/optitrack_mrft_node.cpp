@@ -212,9 +212,9 @@ int main(int argc, char** argv) {
 
     //*************Setting Flight Elements*************
 
-    ((UpdateController*)update_controller_pid_x)->pid_data.kp = 0.6534;
+    ((UpdateController*)update_controller_pid_x)->pid_data.kp = 1.1179;
     ((UpdateController*)update_controller_pid_x)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_x)->pid_data.kd = 0.3831;
+    ((UpdateController*)update_controller_pid_x)->pid_data.kd = 0.5801;
     ((UpdateController*)update_controller_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_x)->pid_data.en_pv_derivation = 1;
@@ -285,7 +285,7 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef Y_ONLY
-    ((UpdateController*)update_controller_mrft_y)->mrft_data.beta = -0.73;
+    ((UpdateController*)update_controller_mrft_y)->mrft_data.beta = -0.6875;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.relay_amp = 0.20;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_y)->mrft_data.no_switch_delay_in_ms = 100.0;
