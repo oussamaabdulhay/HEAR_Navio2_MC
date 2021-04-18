@@ -203,18 +203,18 @@ int main(int argc, char** argv) {
 
     //*************Setting Flight Elements*************
 
-    ((UpdateController*)update_controller_pid_x)->pid_data.kp = 0.6534;
+    ((UpdateController*)update_controller_pid_x)->pid_data.kp = 1.1179;
     ((UpdateController*)update_controller_pid_x)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_x)->pid_data.kd = 0.3831;
+    ((UpdateController*)update_controller_pid_x)->pid_data.kd = 0.5801;
     ((UpdateController*)update_controller_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_x)->pid_data.en_pv_derivation = 1;
     ((UpdateController*)update_controller_pid_x)->pid_data.dt = (float)1.0/120.0;
     ((UpdateController*)update_controller_pid_x)->pid_data.id = block_id::PID_X;
 
-    ((UpdateController*)update_controller_pid_y)->pid_data.kp = 0.7176;
+    ((UpdateController*)update_controller_pid_y)->pid_data.kp = 0.9951;
     ((UpdateController*)update_controller_pid_y)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_y)->pid_data.kd =  0.4208;
+    ((UpdateController*)update_controller_pid_y)->pid_data.kd =  0.5164;
     ((UpdateController*)update_controller_pid_y)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_y)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_y)->pid_data.en_pv_derivation = 1;
@@ -267,13 +267,13 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef TRANSLATION_X_CAMERA
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 0.9089; //0.6552
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 1.1183; //0.6552
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.ki = 0.0; 
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.4962; //0.4782
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.5804; //0.4782
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.dt = (float)1.0/200.0;
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.dt = (float)1.0/60.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.id = block_id::PID_Camera_X;
 
     // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kp = 0.416; //0.4878
@@ -293,7 +293,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.dt = (float)1.0/200.0;
+    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.dt = (float)1.0/60.0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.id = block_id::PID_Camera_Z;
 
     // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kp = 0.6562; //0.4535 //0.6562
