@@ -221,9 +221,9 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_x)->pid_data.dt = (float)1.0/120.0;
     ((UpdateController*)update_controller_pid_x)->pid_data.id = block_id::PID_X;
 
-    ((UpdateController*)update_controller_pid_y)->pid_data.kp = 0.7176;
+    ((UpdateController*)update_controller_pid_y)->pid_data.kp = 0.9951;
     ((UpdateController*)update_controller_pid_y)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_y)->pid_data.kd =  0.4208;
+    ((UpdateController*)update_controller_pid_y)->pid_data.kd =  0.5164;
     ((UpdateController*)update_controller_pid_y)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_y)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_y)->pid_data.en_pv_derivation = 1;
