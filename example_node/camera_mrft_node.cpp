@@ -277,7 +277,7 @@ int main(int argc, char** argv) {
 
     #ifdef MRFT_X_CAMERA
     ((UpdateController*)update_controller_mrft_x)->mrft_data.beta = -0.6875;
-    ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.1;
+    ((UpdateController*)update_controller_mrft_x)->mrft_data.relay_amp = 0.15;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.no_switch_delay_in_ms = 100.0;
     ((UpdateController*)update_controller_mrft_x)->mrft_data.num_of_peak_conf_samples=5;
