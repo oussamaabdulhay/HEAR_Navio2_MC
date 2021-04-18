@@ -26,8 +26,8 @@
 
 
 #undef Z_ONLY
-#define X_ONLY
-#undef Y_ONLY
+#undef X_ONLY
+#define Y_ONLY
 
 
 int main(int argc, char** argv) {
