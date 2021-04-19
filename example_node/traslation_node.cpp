@@ -267,9 +267,9 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef TRANSLATION_X_CAMERA
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 0.9753; //0.6552
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 0.9403; //0.6552
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.ki = 0.0; 
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.5061; //0.4782
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.4880; //0.4782
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.en_pv_derivation = 1;
