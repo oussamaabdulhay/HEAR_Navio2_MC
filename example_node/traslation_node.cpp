@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_pid_yaw_rate = new UpdateController();
 
     #ifdef TRANSLATION_X_CAMERA
-    MissionElement* update_controller_camera_tracking_pid_x = new UpdateController();
+    //MissionElement* update_controller_camera_tracking_pid_x = new UpdateController();
     MissionElement* update_controller_camera_hovering_pid_x = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_x=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_x=new SwitchTrigger(1);
@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
-    MissionElement* update_controller_camera_tracking_pid_z = new UpdateController();
+    //MissionElement* update_controller_camera_tracking_pid_z = new UpdateController();
     MissionElement* update_controller_camera_hovering_pid_z = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_z=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_z=new SwitchTrigger(1);
@@ -156,7 +156,7 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_X_CAMERA
     update_controller_camera_hovering_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    update_controller_camera_tracking_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    //update_controller_camera_tracking_pid_x->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     pid_opti_to_camera_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_y)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     change_constant_x->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_x)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_Z_CAMERA
     update_controller_camera_hovering_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
-    update_controller_camera_tracking_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
+    //update_controller_camera_tracking_pid_z->getPorts()[(int)UpdateController::ports_id::OP_0]->connect(ros_updt_ctr->getPorts()[(int)ROSUnit_UpdateControllerClnt::ports_id::IP_0_PID]);
     pid_opti_to_camera_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     camera_to_pid_opti_switch_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_camera_pid_switch_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
     change_constant_z->getPorts()[(int)SwitchTrigger::ports_id::OP_0]->connect((ros_update_constant_z)->getPorts()[(int)ROSUnit_SetFloatClnt::ports_id::IP_0]);
@@ -276,14 +276,14 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.dt = (float)1.0/200.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.id = block_id::PID_Camera_X;
 
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kp = 0.9403; //0.4878
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.ki = 0.0; 
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kd = 0.4880; //0.3560
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kdd = 0.0;
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.anti_windup = 0;
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.dt = (float)1.0/59.0;
-    ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.id = block_id::PID_Camera_X_tracking;
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kp = 0.9403; //0.4878
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.ki = 0.0; 
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kd = 0.4880; //0.3560
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kdd = 0.0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.anti_windup = 0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.en_pv_derivation = 1;
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.dt = (float)1.0/59.0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.id = block_id::PID_Camera_X_tracking;
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
@@ -296,14 +296,14 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.dt = (float)1.0/200.0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.id = block_id::PID_Camera_Z;
 
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kp = 0.3739; //0.4535 //0.6562
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.ki = 0; 
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kd = 0.1705; //0.1829 //0.2647 
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kdd = 0.0;
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.anti_windup = 0;
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.dt = (float)1.0/59.0;
-    ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.id = block_id::PID_Camera_Z_tracking;
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kp = 0.3739; //0.4535 //0.6562
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.ki = 0; 
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kd = 0.1705; //0.1829 //0.2647 
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.kdd = 0.0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.anti_windup = 0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.en_pv_derivation = 1;
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.dt = (float)1.0/59.0;
+    // ((UpdateController*)update_controller_camera_tracking_pid_z)->pid_data.id = block_id::PID_Camera_Z_tracking;
     #endif
 
     ((ResetController*)reset_z)->target_block = block_id::PID_Z;
@@ -337,12 +337,12 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_Z_CAMERA
     translation_pipeline.addElement((MissionElement*)update_controller_camera_hovering_pid_z);
-    translation_pipeline.addElement((MissionElement*)update_controller_camera_tracking_pid_z);
+    //translation_pipeline.addElement((MissionElement*)update_controller_camera_tracking_pid_z);
     #endif
 
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)update_controller_camera_hovering_pid_x);
-    translation_pipeline.addElement((MissionElement*)update_controller_camera_tracking_pid_x);
+    //translation_pipeline.addElement((MissionElement*)update_controller_camera_tracking_pid_x);
     #endif
 
     translation_pipeline.addElement((MissionElement*)set_height_offset); //TODO: (CHECK Desc) Set a constant height command/reference based on the current pos
