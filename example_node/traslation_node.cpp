@@ -388,7 +388,7 @@ int main(int argc, char** argv) {
 
     //translation_pipeline.addElement((MissionElement*)&wait_7s);
     translation_pipeline.addElement((MissionElement*)user_command);  
-    translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
+    //translation_pipeline.addElement((MissionElement*)initial_pose_waypoint);
 
     #ifdef TRANSLATION_Z_CAMERA
     translation_pipeline.addElement((MissionElement*)camera_to_pid_opti_switch_z);
