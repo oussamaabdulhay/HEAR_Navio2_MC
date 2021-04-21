@@ -374,14 +374,14 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)change_constant_z);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)change_constant_x);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)change_constant_z);
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)change_constant_x);
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
     #endif
     #endif
 
