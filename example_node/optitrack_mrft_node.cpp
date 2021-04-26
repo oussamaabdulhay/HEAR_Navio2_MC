@@ -248,9 +248,9 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_roll)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_roll)->pid_data.id = block_id::PID_ROLL;
 
-    ((UpdateController*)update_controller_pid_pitch)->pid_data.kp = 0.3247*1.1;
+    ((UpdateController*)update_controller_pid_pitch)->pid_data.kp = 0.3247;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_pitch)->pid_data.kd =  0.0543*1.1;
+    ((UpdateController*)update_controller_pid_pitch)->pid_data.kd =  0.0543;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.en_pv_derivation = 1;
@@ -295,7 +295,7 @@ int main(int argc, char** argv) {
 
     #ifdef Z_ONLY
     ((UpdateController*)update_controller_mrft_z)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.15; //0.1;
+    ((UpdateController*)update_controller_mrft_z)->mrft_data.relay_amp = 0.2; //0.1;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.no_switch_delay_in_ms = 100.0;
     ((UpdateController*)update_controller_mrft_z)->mrft_data.num_of_peak_conf_samples=5;
