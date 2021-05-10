@@ -371,6 +371,10 @@ int main(int argc, char** argv) {
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
+     translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_x);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
