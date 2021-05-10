@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_camera_hovering_pid_x = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_x=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_x=new SwitchTrigger(1);
-    MissionElement* change_constant_x=new SwitchTrigger(0.5);
+    MissionElement* change_constant_x=new SwitchTrigger(1.0);
     MissionElement* constant_back_zero_x=new SwitchTrigger(0);
     #endif
 
