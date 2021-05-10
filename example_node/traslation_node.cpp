@@ -287,9 +287,9 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
-    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kp = 1.253; //1.1766
+    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kp = 1.0431; //1.1766
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.ki = 0; 
-    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kd = 0.4257; //0.3143
+    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kd = 0.3474; //0.3143
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.en_pv_derivation = 1;
