@@ -26,7 +26,7 @@
 
 
 #define TRANSLATION_Z_CAMERA
-#undef TRANSLATION_X_CAMERA
+#define TRANSLATION_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_camera_hovering_pid_x = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_x=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_x=new SwitchTrigger(1);
-    MissionElement* change_constant_x=new SwitchTrigger(1.0);
+    MissionElement* change_constant_x=new SwitchTrigger(0.6);
     MissionElement* constant_back_zero_x=new SwitchTrigger(0);
     #endif
 
@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.en_pv_derivation = 1;
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.dt = (float)1.0/100.0;
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.dt = (float)1.0/200.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.id = block_id::PID_Camera_X;
 
     // ((UpdateController*)update_controller_camera_tracking_pid_x)->pid_data.kp = 0.9403; //0.4878
@@ -374,14 +374,14 @@ int main(int argc, char** argv) {
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
-    // translation_pipeline.addElement((MissionElement*)user_command);
-    // translation_pipeline.addElement((MissionElement*)change_constant_z);
-    // translation_pipeline.addElement((MissionElement*)user_command);
-    // translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
-    // translation_pipeline.addElement((MissionElement*)user_command);
-    // translation_pipeline.addElement((MissionElement*)change_constant_x);
-    // translation_pipeline.addElement((MissionElement*)user_command);
-    // translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_z);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_x);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
     #endif
     #endif
 
