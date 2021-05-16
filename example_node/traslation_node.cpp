@@ -26,7 +26,7 @@
 
 
 #define TRANSLATION_Z_CAMERA
-#undef TRANSLATION_X_CAMERA
+#define TRANSLATION_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -371,10 +371,7 @@ int main(int argc, char** argv) {
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)change_constant_z);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
+
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
