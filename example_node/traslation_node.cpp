@@ -26,7 +26,7 @@
 
 
 #define TRANSLATION_Z_CAMERA
-#define TRANSLATION_X_CAMERA
+#undef TRANSLATION_X_CAMERA
 
 
 int main(int argc, char** argv) {
@@ -287,9 +287,9 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef TRANSLATION_Z_CAMERA
-    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kp = 2.575; //1.1766
+    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kp = 1.7766; //1.1766
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.ki = 0; 
-    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kd = 0.5882; //0.3143
+    ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kd = 0.5352; //0.3143
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_z)->pid_data.en_pv_derivation = 1;
@@ -371,6 +371,10 @@ int main(int argc, char** argv) {
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)change_constant_z);
+    // translation_pipeline.addElement((MissionElement*)user_command);
+    // translation_pipeline.addElement((MissionElement*)constant_back_zero_z);
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
