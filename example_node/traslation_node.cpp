@@ -25,7 +25,7 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#define TRANSLATION_Z_CAMERA
+#undef TRANSLATION_Z_CAMERA
 #define TRANSLATION_X_CAMERA
 
 
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     MissionElement* update_controller_camera_hovering_pid_x = new UpdateController();
     MissionElement* pid_opti_to_camera_switch_x=new SwitchTrigger(3);
     MissionElement* camera_to_pid_opti_switch_x=new SwitchTrigger(1);
-    MissionElement* change_constant_x=new SwitchTrigger(0.6);
+    MissionElement* change_constant_x=new SwitchTrigger(0.5);
     MissionElement* constant_back_zero_x=new SwitchTrigger(0);
     #endif
 
@@ -267,9 +267,9 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_yaw_rate)->pid_data.id = block_id::PID_YAW_RATE;
 
     #ifdef TRANSLATION_X_CAMERA
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 0.5966; //0.6552
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kp = 1.0155; //0.6552
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.ki = 0.0; 
-    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.3628; //0.4782
+    ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kd = 0.5361; //0.4782
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_camera_hovering_pid_x)->pid_data.en_pv_derivation = 1;
@@ -372,6 +372,12 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
 
+    #ifdef TRANSLATION_X_CAMERA
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)change_constant_x);
+    translation_pipeline.addElement((MissionElement*)user_command);
+    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
+    #endif
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
