@@ -25,7 +25,7 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
 
-#undef TRANSLATION_Z_CAMERA
+#define TRANSLATION_Z_CAMERA
 #define TRANSLATION_X_CAMERA
 
 
@@ -367,17 +367,12 @@ int main(int argc, char** argv) {
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_z);
     #endif
 
+    translation_pipeline.addElement((MissionElement*)user_command);
 
     #ifdef TRANSLATION_X_CAMERA
     translation_pipeline.addElement((MissionElement*)pid_opti_to_camera_switch_x);
     #endif
 
-    #ifdef TRANSLATION_X_CAMERA
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)change_constant_x);
-    translation_pipeline.addElement((MissionElement*)user_command);
-    translation_pipeline.addElement((MissionElement*)constant_back_zero_x);
-    #endif
 
     #ifdef TRANSLATION_Z_CAMERA
     #ifdef TRANSLATION_X_CAMERA
