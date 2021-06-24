@@ -318,14 +318,14 @@ int main(int argc, char** argv) {
 
 #ifdef MRFT_ROLL_CHAN
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.04;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.03;
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.id = block_id::MRFT_ROLL;
 #endif
 
 #ifdef MRFT_PITCH_CHAN
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.04;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.03;
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.id = block_id::MRFT_PITCH;
 #endif
