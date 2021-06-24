@@ -25,7 +25,7 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_RestNormSettingsClnt.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
-//#define MRFT_ROLL_CHAN
+#define MRFT_ROLL_CHAN
 #define MRFT_PITCH_CHAN
 //#define MRFT_Z_CHAN
 
@@ -381,7 +381,7 @@ int main(int argc, char** argv) {
     mrft_pipeline.addElement((MissionElement*)user_command);
     mrft_pipeline.addElement((MissionElement*)reset_z); //Reset I-term to zero
     mrft_pipeline.addElement((MissionElement*)takeoff_relative_waypoint);
-    mrft_pipeline.addElement((MissionElement*)user_command);
+    mrft_pipeline.addElement((MissionElement*)&wait_1s);
 
     #ifdef MRFT_ROLL_CHAN
     mrft_pipeline.addElement((MissionElement*)mrft_switch_on_roll);
