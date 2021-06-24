@@ -279,18 +279,18 @@ int main(int argc, char** argv) {
     ((UpdateController*)update_controller_pid_z)->pid_data.dt = (float)1.0/120.0;
     ((UpdateController*)update_controller_pid_z)->pid_data.id = block_id::PID_Z;
 
-    ((UpdateController*)update_controller_pid_roll)->pid_data.kp = 0.3227;
+    ((UpdateController*)update_controller_pid_roll)->pid_data.kp = 0.3227 * 0.9;
     ((UpdateController*)update_controller_pid_roll)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_roll)->pid_data.kd = 0.0558;
+    ((UpdateController*)update_controller_pid_roll)->pid_data.kd = 0.0558 * 0.9;
     ((UpdateController*)update_controller_pid_roll)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_roll)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_roll)->pid_data.en_pv_derivation = 1;
     ((UpdateController*)update_controller_pid_roll)->pid_data.dt = 1.f/200.f;
     ((UpdateController*)update_controller_pid_roll)->pid_data.id = block_id::PID_ROLL;
 
-    ((UpdateController*)update_controller_pid_pitch)->pid_data.kp = 0.2981;
+    ((UpdateController*)update_controller_pid_pitch)->pid_data.kp = 0.2981 * 0.9;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.ki = 0.0;
-    ((UpdateController*)update_controller_pid_pitch)->pid_data.kd =  0.0515;
+    ((UpdateController*)update_controller_pid_pitch)->pid_data.kd =  0.0515 * 0.9;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.kdd = 0.0;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.anti_windup = 0;
     ((UpdateController*)update_controller_pid_pitch)->pid_data.en_pv_derivation = 1;
@@ -318,14 +318,14 @@ int main(int argc, char** argv) {
 
 #ifdef MRFT_ROLL_CHAN
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.03;
+    ((UpdateController*)update_controller_mrft_roll)->mrft_data.relay_amp = 0.04;
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_roll)->mrft_data.id = block_id::MRFT_ROLL;
 #endif
 
 #ifdef MRFT_PITCH_CHAN
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.beta = -0.73;
-    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.03;
+    ((UpdateController*)update_controller_mrft_pitch)->mrft_data.relay_amp = 0.04;
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.bias = 0.0;
     ((UpdateController*)update_controller_mrft_pitch)->mrft_data.id = block_id::MRFT_PITCH;
 #endif
