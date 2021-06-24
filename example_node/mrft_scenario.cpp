@@ -25,8 +25,8 @@
 #include "HEAR_ROS_BRIDGE/ROSUnit_RestNormSettingsClnt.hpp"
 #include "HEAR_ROS_BRIDGE/ROSUnit_ControlOutputSubscriber.hpp"
 
-//#define MRFT_ROLL_CHAN
-//#define MRFT_PITCH_CHAN
+#define MRFT_ROLL_CHAN
+#define MRFT_PITCH_CHAN
 //#define MRFT_Z_CHAN
 
 #undef SMALL_HEXA
